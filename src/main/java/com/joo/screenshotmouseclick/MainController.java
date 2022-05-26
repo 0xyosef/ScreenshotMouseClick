@@ -9,11 +9,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainController {
-    static Robot robot;
-    static BufferedImage bufferedImage;
-    static Dimension screenSize;
-    static Rectangle capture;
-    static String path ="Image";
+    private Robot robot;
+    private BufferedImage bufferedImage;
+    private Dimension screenSize;
+    private Rectangle capture;
+    private String path ="Image";
 
     MainController()  {
         init();
@@ -25,7 +25,7 @@ public class MainController {
 
     }
 
-    public static void saveScreenshot() {
+    public void saveScreenshot() {
         try {
             saveImage(path);
         }catch (IOException e){
@@ -42,13 +42,13 @@ public class MainController {
         }
     }
 
-    public static void takeScreenshot(){
+    public void takeScreenshot(){
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         capture = new Rectangle(screenSize);
         bufferedImage = robot.createScreenCapture(capture);
     }
 
-    public static void saveImage(String path) throws IOException {
+    public void saveImage(String path) throws IOException {
         File file = new File(path);
         file.mkdir();
         int count = file.list().length;

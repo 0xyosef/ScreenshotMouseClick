@@ -8,8 +8,8 @@ public class MouseListener implements NativeMouseInputListener {
     public void nativeMousePressed(NativeMouseEvent e) {
         System.out.println("Mouse Pressed: " + e.getButton());
         if (e.getButton() == 1 || e.getButton() == 2) {
-            MainController.takeScreenshot();
-            MainController.saveScreenshot();
+            /*MainController.takeScreenshot();
+            MainController.saveScreenshot();*/
         }
     }
 }
