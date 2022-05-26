@@ -1,3 +1,5 @@
+package com.joo.screenshotmouseclick;
+
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 import javax.imageio.ImageIO;

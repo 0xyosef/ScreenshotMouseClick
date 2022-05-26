@@ -1,4 +1,6 @@
-public class main {
+package com.joo.screenshotmouseclick;
+
+public class Main {
     public static void main(String[] args) {
         new MainController();
     }
