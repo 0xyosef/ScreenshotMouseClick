@@ -12,15 +12,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class PDFController {
-    private final PDDocument document;
-
-    public PDFController() {
-        document = new PDDocument();
-    }
 
     public void createPDF(BufferedImage[] images, String path, String title) {
+        PDDocument document = new PDDocument();
         // Set the metadata
-        setMetadata(title);
+        setMetadata(title, document);
 
         // Create the pages, by images number
         for (BufferedImage image : images) {
@@ -30,7 +26,7 @@ public class PDFController {
         }
 
         // Add the images to the pages
-        addImagesToPages(images);
+        addImagesToPages(images, document);
 
         try {
             // Save the document
@@ -42,7 +38,7 @@ public class PDFController {
         }
     }
 
-    private void addImagesToPages(BufferedImage[] images) {
+    private void addImagesToPages(BufferedImage[] images, PDDocument document) {
         for (int i = 0; i < images.length; i++) {
             try {
                 // Crate the cache for the image
@@ -64,7 +60,7 @@ public class PDFController {
         }
     }
 
-    private void setMetadata(String title) {
+    private void setMetadata(String title, PDDocument document) {
         PDDocumentInformation info = document.getDocumentInformation();
         info.setTitle(title);
         info.setAuthor("ScreenshotMouseClick by Joo and anos");
