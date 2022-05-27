@@ -1,6 +1,5 @@
 package com.joo.screenshotmouseclick.pdf;
 
-import org.apache.pdfbox.contentstream.PDContentStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -8,9 +7,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 public class PDFController {
@@ -36,7 +34,7 @@ public class PDFController {
 
         try {
             // Save the document
-            document.save(path);
+            document.save(path + File.separator + title + ".pdf");
             // Close the document
             document.close();
         } catch (IOException e) {
@@ -47,9 +45,10 @@ public class PDFController {
     private void addImagesToPages(BufferedImage[] images) {
         for (int i = 0; i < images.length; i++) {
             try {
+                // Crate the cache for the image
+                File image =  CacheManager.addImage(images[i]);
                 // Get the image bytes from the image and add to the PDImageXObject
-                PDImageXObject pdImage = PDImageXObject.
-                        createFromByteArray(document, imageToBytes(images[i]), "image" + i);
+                PDImageXObject pdImage = PDImageXObject.createFromFile(image.getPath(), document);
                 // Add the image to the page
                 PDPageContentStream pdPageContentStream =
                         new PDPageContentStream(document, document.getPage(i));
@@ -57,16 +56,12 @@ public class PDFController {
                 pdPageContentStream.drawImage(pdImage, 0, 0);
                 // Close the stream
                 pdPageContentStream.close();
+                // Remove the image from the cache
+                image.delete();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    private byte[] imageToBytes(BufferedImage image) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, "png", baos);
-        return baos.toByteArray();
     }
 
     private void setMetadata(String title) {
