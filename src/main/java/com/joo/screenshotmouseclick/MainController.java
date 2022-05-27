@@ -59,9 +59,11 @@ public class MainController {
         g.setColor(Color.RED);
         // Draw a mouse pointer
         g.drawImage(
-                new ImageIcon("resources/cursor1.png").getImage(),
+                new ImageIcon("src/main/resources/cursor1.png").getImage(),
                 mousePoint.x,
                 mousePoint.y,
+                32,
+                32,
                 null);
         g.dispose();
     }
