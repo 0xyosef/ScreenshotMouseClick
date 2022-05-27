@@ -2,6 +2,7 @@ package com.joo.screenshotmouseclick;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
+import com.joo.screenshotmouseclick.gui.MainFrame;
 import com.joo.screenshotmouseclick.listners.MouseListener;
 import com.joo.screenshotmouseclick.listners.ShortCutsListener;
 import com.joo.screenshotmouseclick.pdf.PDFController;
@@ -19,9 +20,10 @@ public class MainController {
     private ArrayList<BufferedImage> images;
     private PDFController pdfController;
     private Rectangle capture;
+    private volatile boolean running;
     private String path ="Image";
 
-    MainController()  {
+    public MainController()  {
         init();
     }
 
@@ -43,6 +45,7 @@ public class MainController {
         capture = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
         pdfController = new PDFController();
         images = new ArrayList<>();
+        running = false;
     }
 
     private void addGlobalKeyListener() {
@@ -79,5 +82,17 @@ public class MainController {
     private void addGlobalMouseListener() throws NativeHookException {
         GlobalScreen.registerNativeHook();
         GlobalScreen.addNativeMouseListener(new MouseListener(this));
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void start() {
+        running = true;
+    }
+
+    public void stop() {
+        running = false;
     }
 }
