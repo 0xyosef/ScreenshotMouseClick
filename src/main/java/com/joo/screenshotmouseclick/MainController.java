@@ -88,11 +88,11 @@ public class MainController {
         return running;
     }
 
-    public void start() {
+    public void startRec() {
         running = true;
     }
 
-    public void stop() {
+    public void stopRec() {
         running = false;
     }
 }

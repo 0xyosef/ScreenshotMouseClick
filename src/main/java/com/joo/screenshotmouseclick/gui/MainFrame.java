@@ -10,7 +10,9 @@ public class MainFrame extends JFrame {
     private final MainController mainController;
     private JButton startAndStopButton,
             pauseAndResumeButton,
-            settingsButton;
+            settingsButton,
+            openViewerButton,
+            saveButton;
 
     public MainFrame() {
         setupTheFrame();
@@ -26,14 +28,14 @@ public class MainFrame extends JFrame {
     private void addTheListeners() {
         startAndStopButton.addActionListener(e -> {
             if (mainController.isRunning()) {
-                mainController.stop();
+                mainController.stopRec();
                 mainController.saveScreenshots();
                 startAndStopButton.setText("Start");
                 pauseAndResumeButton.setEnabled(false);
                 pauseAndResumeButton.setText("Pause");
             } else {
-                mainController.start();
-                super.setState(Frame.ICONIFIED); // Minimize the window if that is possible (wm's not
+                mainController.startRec();
+                // super.setState(Frame.ICONIFIED); // Minimize the window if that is possible (wm's not
                 startAndStopButton.setText("Stop");
                 pauseAndResumeButton.setEnabled(true);
                 pauseAndResumeButton.setText("Pause");
@@ -41,11 +43,11 @@ public class MainFrame extends JFrame {
         });
 
         pauseAndResumeButton.addActionListener(e -> {
-            if (mainController.isRunning()) {
-                mainController.start();
+            if (!mainController.isRunning()) {
+                mainController.startRec();
                 pauseAndResumeButton.setText("Pause");
             } else {
-                mainController.stop();
+                mainController.stopRec();
                 pauseAndResumeButton.setText("Resume");
             }
         });
