@@ -7,6 +7,7 @@ import com.joo.screenshotmouseclick.listners.ShortCutsListener;
 import com.joo.screenshotmouseclick.pdf.PDFController;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,17 +23,12 @@ public class MainController {
 
     MainController()  {
         init();
-//        try {
-//            saveImage(path);
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
-
     }
 
     public void saveScreenshots() {
         // Test
         pdfController.createPDF(images.toArray(new BufferedImage[0]), path, "Screenshot");
+        System.exit(0);
     }
 
     public void init(){
@@ -53,8 +49,21 @@ public class MainController {
         GlobalScreen.addNativeKeyListener(new ShortCutsListener(this));
     }
 
-    public void takeScreenshot(){
+    public void takeScreenshot(Point mousePoint){
        images.add(robot.createScreenCapture(capture));
+       drawPointer(images.get(images.size()-1), mousePoint);
+    }
+
+    private void drawPointer(BufferedImage image, Point mousePoint) {
+        Graphics2D g = image.createGraphics();
+        g.setColor(Color.RED);
+        // Draw a mouse pointer
+        g.drawImage(
+                new ImageIcon("resources/cursor1.png").getImage(),
+                mousePoint.x,
+                mousePoint.y,
+                null);
+        g.dispose();
     }
 
     public void saveScreenshotAsImage(BufferedImage image, String path) throws IOException {
