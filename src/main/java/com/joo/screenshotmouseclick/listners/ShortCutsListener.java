@@ -11,8 +11,10 @@ public class ShortCutsListener extends AbstractListener implements NativeKeyList
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
-        if (e.getKeyCode() == NativeKeyEvent.VC_F12) {
-            mainController.saveScreenshots();
+        if (e.getKeyCode() == NativeKeyEvent.VC_F12 &&
+                mainController.isRunning()) {
+            mainController.stopRec();
+            System.out.println("Recording stopped by F12");
         }
     }
 }

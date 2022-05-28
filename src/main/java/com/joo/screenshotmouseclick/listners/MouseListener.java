@@ -12,7 +12,8 @@ public class MouseListener extends AbstractListener implements NativeMouseInputL
     }
     public void nativeMousePressed(NativeMouseEvent e) {
         System.out.println("Mouse Pressed: " + e.getButton());
-        if (e.getButton() == 1 || e.getButton() == 2) {
+        if ((e.getButton() == 1 || e.getButton() == 2)
+                && mainController.isRunning()) {
             mainController.takeScreenshot(e.getPoint());
             System.out.println("Screenshot taken");
         }

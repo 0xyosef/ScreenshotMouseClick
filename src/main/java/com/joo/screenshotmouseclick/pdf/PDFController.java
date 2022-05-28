@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class PDFController {
 
-    public void createPDF(BufferedImage[] images, String path, String title) {
+    public void createPDF(BufferedImage[] images, String path, String title) throws IOException {
         PDDocument document = new PDDocument();
         // Set the metadata
         setMetadata(title, document);
@@ -27,22 +27,17 @@ public class PDFController {
 
         // Add the images to the pages
         addImagesToPages(images, document);
-
-        try {
-            // Save the document
-            document.save(path + File.separator + title + ".pdf");
-            // Close the document
-            document.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Save the document
+        document.save(path + (path.endsWith(".pdf") ? "" : ".pdf"));
+        // Close the document
+        document.close();
     }
 
     private void addImagesToPages(BufferedImage[] images, PDDocument document) {
         for (int i = 0; i < images.length; i++) {
             try {
                 // Crate the cache for the image
-                File image =  CacheManager.addImage(images[i]);
+                File image = CacheManager.addImage(images[i]);
                 // Get the image bytes from the image and add to the PDImageXObject
                 PDImageXObject pdImage = PDImageXObject.createFromFile(image.getPath(), document);
                 // Add the image to the page
