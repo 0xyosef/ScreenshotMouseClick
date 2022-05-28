@@ -2,6 +2,7 @@ package com.joo.screenshotmouseclick;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
+import com.joo.screenshotmouseclick.debugg.Debugger;
 import com.joo.screenshotmouseclick.listners.MouseListener;
 import com.joo.screenshotmouseclick.listners.ShortCutsListener;
 import com.joo.screenshotmouseclick.pdf.PDFController;
@@ -82,7 +83,7 @@ public class MainController {
         for (BufferedImage bufferedImage : images) {
             ImageIO.write(bufferedImage, "png",
                     new File(path + File.separator + ++count + ".png"));
-            System.out.println("Saved image " + count);
+            Debugger.println("Saved image " + count);
         }
 
     }
