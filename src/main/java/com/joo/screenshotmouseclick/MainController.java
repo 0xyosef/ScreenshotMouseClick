@@ -2,7 +2,6 @@ package com.joo.screenshotmouseclick;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
-import com.joo.screenshotmouseclick.gui.MainFrame;
 import com.joo.screenshotmouseclick.listners.MouseListener;
 import com.joo.screenshotmouseclick.listners.ShortCutsListener;
 import com.joo.screenshotmouseclick.pdf.PDFController;
@@ -14,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainController {
     private Robot robot;
@@ -21,16 +21,17 @@ public class MainController {
     private PDFController pdfController;
     private Rectangle capture;
     private volatile boolean running;
-    private String path ="Image";
 
     public MainController()  {
         init();
     }
 
-    public void saveScreenshots() {
-        // Test
-        pdfController.createPDF(images.toArray(new BufferedImage[0]), path, "Screenshot");
-        System.exit(0);
+    public void saveScreenshots(File target, SAVE_MODE mode) throws IOException {
+        switch (mode) {
+            case PDF -> pdfController.createPDF(images.toArray(new BufferedImage[0]),
+                            target.getAbsolutePath(), target.getName());
+            case PNG -> saveScreenshotsAsImages(target.getAbsolutePath());
+        }
     }
 
     public void init(){
@@ -62,6 +63,7 @@ public class MainController {
         g.setColor(Color.RED);
         // Draw a mouse pointer
         g.drawImage(
+
                 new ImageIcon("src/main/resources/cursor1.png").getImage(),
                 mousePoint.x,
                 mousePoint.y,
@@ -71,12 +73,17 @@ public class MainController {
         g.dispose();
     }
 
-    public void saveScreenshotAsImage(BufferedImage image, String path) throws IOException {
+    public void saveScreenshotsAsImages(String path) throws IOException {
         File file = new File(path);
-        file.mkdir();
-        int count = file.list().length;
-        ImageIO.write(image, "jpg", new File(path + "/" + count + ".jpg"));
-        System.out.println("Image saved");
+        int count = 0;
+        if (file.list() != null) {
+            count = Objects.requireNonNull(file.list()).length;
+        }
+        for (BufferedImage bufferedImage : images) {
+            ImageIO.write(bufferedImage, "png",
+                    new File(path + File.separator + ++count + ".png"));
+            System.out.println("Saved image " + count);
+        }
 
     }
     private void addGlobalMouseListener() throws NativeHookException {
