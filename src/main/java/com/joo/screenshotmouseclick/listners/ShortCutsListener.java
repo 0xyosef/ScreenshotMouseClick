@@ -3,6 +3,7 @@ package com.joo.screenshotmouseclick.listners;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import com.joo.screenshotmouseclick.MainController;
+import com.joo.screenshotmouseclick.debugg.Debugger;
 
 public class ShortCutsListener extends AbstractListener implements NativeKeyListener {
     public ShortCutsListener(MainController mainController) {
@@ -14,7 +15,7 @@ public class ShortCutsListener extends AbstractListener implements NativeKeyList
         if (e.getKeyCode() == NativeKeyEvent.VC_F12 &&
                 mainController.isRunning()) {
             mainController.stopRec();
-            System.out.println("Recording stopped by F12");
+            Debugger.println("Recording stopped by F12");
         }
     }
 }

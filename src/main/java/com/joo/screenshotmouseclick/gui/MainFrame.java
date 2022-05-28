@@ -2,6 +2,7 @@ package com.joo.screenshotmouseclick.gui;
 
 import com.joo.screenshotmouseclick.MainController;
 import com.joo.screenshotmouseclick.SAVE_MODE;
+import com.joo.screenshotmouseclick.debugg.Debugger;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ public class MainFrame extends JFrame {
             saveButton;
 
     public MainFrame() {
+        Debugger.setEnable(true); // Active debug mode
         setupTheFrame();
         setupTheButtons();
         addTheComponentsToTheFrame();
@@ -53,11 +55,11 @@ public class MainFrame extends JFrame {
             if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 try {
                     mainController.saveScreenshots(fileChooser.getSelectedFile(), saveMode);
-                    System.out.println("Saved in: " + fileChooser.getSelectedFile().getAbsolutePath());
+                    Debugger.println("Saved in: " + fileChooser.getSelectedFile().getAbsolutePath());
                     JOptionPane.showMessageDialog(this, "Successfully saved in: " +
                             fileChooser.getSelectedFile().getAbsolutePath());
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    Debugger.println(ex.toString(), true);
                     JOptionPane.showMessageDialog(this, "Error while saving: " + ex.getMessage());
                 }
             }
