@@ -57,6 +57,7 @@ public class MainController {
     public void takeScreenshot(Point mousePoint){
        images.add(robot.createScreenCapture(capture));
        drawPointer(images.get(images.size()-1), mousePoint);
+        drawText(images.get(images.size()-1), "step"+images.size());
     }
 
     private void drawPointer(BufferedImage image, Point mousePoint) {
@@ -71,6 +72,16 @@ public class MainController {
                 32,
                 32,
                 null);
+        g.dispose();
+    }
+
+    private void drawText(BufferedImage image, String text) {
+        Graphics2D g = image.createGraphics();
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 40));
+        for (int i = 0; i < text.length(); i++) {
+            g.drawString(String.valueOf(text.charAt(i)), i * 20, 120);
+        }
         g.dispose();
     }
 
