@@ -65,11 +65,11 @@ public class MainFrame extends JFrame {
     }
 
     private void addListenerToOpenViewerButton() {
-
+        // TODO: 5/28/22 Implement this method
     }
 
     private void addListenerToSettingsButton() {
-
+        // TODO: 5/28/22 Implement this method
     }
 
     private void addListenerToPauseAndResumeButton() {
