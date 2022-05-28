@@ -2,63 +2,82 @@ package com.joo.screenshotmouseclick;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
+import com.joo.screenshotmouseclick.listners.MouseListener;
+import com.joo.screenshotmouseclick.listners.ShortCutsListener;
+import com.joo.screenshotmouseclick.pdf.PDFController;
+
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainController {
-    static Robot robot;
-    static BufferedImage bufferedImage;
-    static Dimension screenSize;
-    static Rectangle capture;
-    static String path ="Image";
+    private Robot robot;
+    private ArrayList<BufferedImage> images;
+    private PDFController pdfController;
+    private Rectangle capture;
+    private String path ="Image";
 
     MainController()  {
         init();
-//        try {
-//            saveImage(path);
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
-
     }
 
-    public static void saveScreenshot() {
-        try {
-            saveImage(path);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+    public void saveScreenshots() {
+        // Test
+        pdfController.createPDF(images.toArray(new BufferedImage[0]), path, "Screenshot");
+        System.exit(0);
     }
 
     public void init(){
         try {
             robot = new Robot();
             addGlobalMouseListener();
+            addGlobalKeyListener();
         } catch (AWTException | NativeHookException e) {
             e.printStackTrace();
+            System.exit(1); // Exit if there is an error
         }
+        capture = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        pdfController = new PDFController();
+        images = new ArrayList<>();
     }
 
-    public static void takeScreenshot(){
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        capture = new Rectangle(screenSize);
-        bufferedImage = robot.createScreenCapture(capture);
+    private void addGlobalKeyListener() {
+        GlobalScreen.addNativeKeyListener(new ShortCutsListener(this));
     }
 
-    public static void saveImage(String path) throws IOException {
+    public void takeScreenshot(Point mousePoint){
+       images.add(robot.createScreenCapture(capture));
+       drawPointer(images.get(images.size()-1), mousePoint);
+    }
+
+    private void drawPointer(BufferedImage image, Point mousePoint) {
+        Graphics2D g = image.createGraphics();
+        g.setColor(Color.RED);
+        // Draw a mouse pointer
+        g.drawImage(
+                new ImageIcon("src/main/resources/cursor1.png").getImage(),
+                mousePoint.x,
+                mousePoint.y,
+                32,
+                32,
+                null);
+        g.dispose();
+    }
+
+    public void saveScreenshotAsImage(BufferedImage image, String path) throws IOException {
         File file = new File(path);
         file.mkdir();
         int count = file.list().length;
-        ImageIO.write(bufferedImage, "jpg", new File(path + "/" + count + ".jpg"));
+        ImageIO.write(image, "jpg", new File(path + "/" + count + ".jpg"));
         System.out.println("Image saved");
 
     }
     private void addGlobalMouseListener() throws NativeHookException {
         GlobalScreen.registerNativeHook();
-        GlobalScreen.addNativeMouseListener(new MouseListener());
-        GlobalScreen.addNativeMouseMotionListener(new MouseListener());
+        GlobalScreen.addNativeMouseListener(new MouseListener(this));
     }
 }
