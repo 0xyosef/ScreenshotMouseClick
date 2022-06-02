@@ -11,9 +11,9 @@ A program to take a screenshot of steps to solve a problem and save it as a PDF 
 
 # image
 
-![image](ScreenshotMouseClick/screenshot/1.gif)
-![image](ScreenshotMouseClick/screenshot/2.gif)
-![image](ScreenshotMouseClick/screenshot/3.gif)
+![image](screenshot/1.gif)
+![image](screenshot/2.gif)
+![image](screenshot/3.gif)
 
 
 ## Features
