@@ -1,6 +1,8 @@
 # ScreenshotMouseClick
 
 A program to take a screenshot of steps to solve a problem and save it as a PDF or images 🤓
+### NOTE: This is still a work in progress, not all features has been implemented
+
 
 ### CodeFactor
 [![CodeFactor](https://www.codefactor.io/repository/github/yosefjoo/screenshotmouseclick/badge)](https://www.codefactor.io/repository/github/yosefjoo/screenshotmouseclick)
